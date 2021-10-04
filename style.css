@@ -1,0 +1,24 @@
+* {
+    background-color:peachpuff;
+    font-family: monospace;
+    color: slategray;   
+}
+
+.core {
+    display: inline-grid;
+    grid-template-columns: repeat(16, 2fr);
+    grid-template-rows: repeat(16, 2fr);
+    border-style: solid;
+    border-color:darkslategray;
+    height: 360px;
+    width: 360px;
+}
+
+.grid {
+    border-style:dashed;
+    border-width: 1px;
+    border-color: peru;
+    margin: 2px;
+    max-height: 20px;
+    max-width: 20px;
+}

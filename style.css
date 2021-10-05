@@ -4,6 +4,25 @@
     color: slategray;   
 }
 
+header {
+    font-size: xx-large;
+    font-weight: 700;
+}
+
+.display {
+    display: flex;
+    flex-direction: column;
+    margin: 25px;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-panel {
+    display: flex;
+    gap: 10px;
+}
+
 .core {
     display: inline-grid;
     grid-template-columns: repeat(16, 2fr);
@@ -18,7 +37,7 @@
     border-style:dashed;
     border-width: 1px;
     border-color: peru;
-    margin: 2px;
-    max-height: 20px;
-    max-width: 20px;
+    margin: 0px;
+    background-color: white;
 }
+

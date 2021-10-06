@@ -1,6 +1,9 @@
 const container = document.getElementById('core');
 const reset = document.getElementById('reset');
 const defaultGrid = 16;
+var pixel = document.getElementById('pixels');
+const setSize = document.getElementById('new-size');
+var newSize= '16';
 
 function makeGrid(size) {
     core.style.gridTemplateColumns = `repeat(${size}, 2fr)`;
@@ -14,11 +17,24 @@ function makeGrid(size) {
             div.style.background = "slategray";
         });
         reset.addEventListener('click', () => {
-            div.style.background = "white";
+            div.style.background = "floralwhite";
             });
     }
 }
 
+function updateValueBox(val) {
+    document.getElementById('text-input').value = val;
+};
+
+pixel.addEventListener("input", function() {
+    newSize = this.value;
+});
+
+setSize.addEventListener('click', function(){
+    container.innerHTML = "";
+    makeGrid(newSize);
+});
+
 window.onload = () => {
     makeGrid(defaultGrid);
-}
+};

@@ -21,10 +21,26 @@ header {
 .control-panel {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    align-items:stretch;
+    flex: 1 0 auto;
 }
 
 button {
     background-color:antiquewhite;
+}
+
+button:hover {
+    background-color: slategrey;
+    color: antiquewhite;
+}
+
+button:active {
+    background-color: aquamarine;
+}
+
+button:disabled {
+    border-style: inset;
 }
 
 .pixel-box{

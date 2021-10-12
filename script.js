@@ -3,6 +3,10 @@ const reset = document.getElementById('reset');
 const standard = document.getElementById('standard');
 const eraser = document.getElementById('eraser');
 const random = document.getElementById('random');
+const acid = document.getElementById('acid');
+
+const buttons = document.querySelectorAll('button');
+
 const defaultGrid = 16;
 var pixel = document.getElementById('pixels');
 const setSize = document.getElementById('new-size');
@@ -20,37 +24,70 @@ function makeGrid(size) {
         const div = document.createElement('div');
         div.classList.add('grid');
         container.appendChild(div);
-        div.addEventListener('mouseover', () =>{
+        div.addEventListener('mouseover', colourChange);
+        /*() =>{
             div.style.background = color;
-            red = 70;
-            green = 80;
-            blue = 90;
-        });
+        });*/
         reset.addEventListener('click', () => {
             div.style.background = `#FFFAF0`;
             standard.disabled = false;
             eraser.disabled = false;
             });
+
+            
     }
 };
 
+function colourChange(e) {
+    if (acid.disabled === true){
+        red = Math.floor(Math.random() * 256);
+        green = Math.floor(Math.random() * 256);
+        blue = Math.floor(Math.random() * 256);
+        e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+    } else if (standard.disabled = true){
+        e.target.style.backgroundColor = `#708090`;
+    } else if (eraser.disabled = true){
+        e.target.style.backgroundColor = `#FFFAF0`;
+    } else if (random.disabled = true) {
+        e.target.style.backgroundColor;
+    };
+};
+
+function randomC() {
+    red = Math.floor(Math.random() * 256);
+    green = Math.floor(Math.random() * 256);
+    blue = Math.floor(Math.random() * 256);
+}
+
+acid.addEventListener('click', () => {
+    buttons.disabled = false;
+
+    acid.disabled = true;
+    standard.disabled = false;
+    random.disabled = false;
+    eraser.disabled = false;
+})
 
 standard.addEventListener('click', () => {
     standard.disabled = true;
     eraser.disabled = false;
+    acid.disabled = false;
     color = `#708090`;
 });
 
 eraser.addEventListener('click', () => {
     eraser.disabled = true;
     standard.disabled = false;
+    random.disabled = false;
+    acid.disabled = false;
     color = `#FFFAF0`;
 });
 
 random.addEventListener('click', () => {
-    random.disable = true;
+    random.disabled = false;
     eraser.disabled = false;
     standard.disabled = false;
+    acid.disabled = false;
     red = Math.floor(Math.random() * 256);
     green = Math.floor(Math.random() * 256);
     blue = Math.floor(Math.random() * 256);

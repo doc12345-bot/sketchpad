@@ -18,7 +18,7 @@ var color = `#708090`;
 let red;
 let green;
 let blue;
-let lightness = 0;
+let lightness = 100;
 
 function makeGrid(size) {
     core.style.gridTemplateColumns = `repeat(${size}, 2fr)`;
@@ -53,15 +53,22 @@ function colourChange(e) {
         e.target.style.background = color;
     } else if (mode === "pencil") {
         
-        if (lightness < 1){
+        if (lightness <= 100){
             lightness -0.10;
+            e.target.style.background = `hsl(210, 13%, ${lightness}%)`;
         } else {
-            
-        }
-        e.target.style.background = `hsl(210, 13%, ${lightness}%)`;
+            lightness = 100;
+            e.target.style.background = `hsl(210, 13%, ${lightness}%)`;
+        };
     } else {
         e.target.style.background = `#708090`;
     };
+};
+
+function addShade(){
+    do {
+        this.style.opacity +0.1;
+        } while(this.style.opacity >= 1)
 };
 
 pencil.addEventListener('click', () => {

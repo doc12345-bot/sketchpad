@@ -4,6 +4,9 @@ const standard = document.getElementById('standard');
 const eraser = document.getElementById('eraser');
 const random = document.getElementById('random');
 const acid = document.getElementById('acid');
+const pencil = document.getElementById('pencil');
+
+let mode = "standard";
 
 const buttons = document.querySelectorAll('button');
 
@@ -15,6 +18,7 @@ var color = `#708090`;
 let red;
 let green;
 let blue;
+let lightness = 0;
 
 function makeGrid(size) {
     core.style.gridTemplateColumns = `repeat(${size}, 2fr)`;
@@ -25,73 +29,87 @@ function makeGrid(size) {
         div.classList.add('grid');
         container.appendChild(div);
         div.addEventListener('mouseover', colourChange);
-        /*() =>{
-            div.style.background = color;
-        });*/
         reset.addEventListener('click', () => {
             div.style.background = `#FFFAF0`;
+            mode = "standard";
             standard.disabled = false;
             eraser.disabled = false;
+            acid.disabled = false;
             });
-
-            
     }
 };
 
 function colourChange(e) {
-    if (acid.disabled === true){
+    if (mode === "acid"){
         red = Math.floor(Math.random() * 256);
         green = Math.floor(Math.random() * 256);
         blue = Math.floor(Math.random() * 256);
-        e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-    } else if (standard.disabled = true){
-        e.target.style.backgroundColor = `#708090`;
-    } else if (eraser.disabled = true){
-        e.target.style.backgroundColor = `#FFFAF0`;
-    } else if (random.disabled = true) {
-        e.target.style.backgroundColor;
+        e.target.style.background = `rgb(${red}, ${green}, ${blue})`;
+    } else if (mode === "standard"){
+        e.target.style.background = `#708090`;
+    } else if (mode === "eraser"){
+        e.target.style.background = `#FFFAF0`;
+    } else if (mode === "random") {
+        e.target.style.background = color;
+    } else if (mode === "pencil") {
+        
+        if (lightness < 1){
+            lightness -0.10;
+        } else {
+            
+        }
+        e.target.style.background = `hsl(210, 13%, ${lightness}%)`;
+    } else {
+        e.target.style.background = `#708090`;
     };
 };
 
-function randomC() {
-    red = Math.floor(Math.random() * 256);
-    green = Math.floor(Math.random() * 256);
-    blue = Math.floor(Math.random() * 256);
-}
+pencil.addEventListener('click', () => {
+    pencil.disabled = true;
+    acid.disabled = false;
+    standard.disabled = false;
+    random.disabled = false;
+    eraser.disabled = false;
+    mode = "pencil";
+})
 
 acid.addEventListener('click', () => {
-    buttons.disabled = false;
-
     acid.disabled = true;
     standard.disabled = false;
     random.disabled = false;
     eraser.disabled = false;
+    pencil.disabled = false;
+    mode = "acid";
 })
 
 standard.addEventListener('click', () => {
     standard.disabled = true;
     eraser.disabled = false;
     acid.disabled = false;
+    pencil.disabled = false;
     color = `#708090`;
+    mode = "standard";
 });
 
 eraser.addEventListener('click', () => {
     eraser.disabled = true;
     standard.disabled = false;
-    random.disabled = false;
     acid.disabled = false;
+    pencil.disabled = false;
     color = `#FFFAF0`;
+    mode = "eraser";
 });
 
 random.addEventListener('click', () => {
-    random.disabled = false;
     eraser.disabled = false;
     standard.disabled = false;
     acid.disabled = false;
+    pencil.disabled = false;
     red = Math.floor(Math.random() * 256);
     green = Math.floor(Math.random() * 256);
     blue = Math.floor(Math.random() * 256);
     color = `rgb(${red}, ${green}, ${blue})`;
+    mode = "random";
 })
 
 function updateValueBox(val) {

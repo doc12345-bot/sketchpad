@@ -52,7 +52,6 @@ function colourChange(e) {
     } else if (mode === "random") {
         e.target.style.background = color;
     } else if (mode === "pencil") {
-        
         if (lightness <= 100){
             lightness -0.10;
             e.target.style.background = `hsl(210, 13%, ${lightness}%)`;

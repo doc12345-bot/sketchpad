@@ -31,6 +31,7 @@ function makeGrid(size) {
         div.addEventListener('mouseover', colourChange);
         reset.addEventListener('click', () => {
             div.style.background = `#FFFAF0`;
+            div.style.opacity =
             mode = "standard";
             standard.disabled = false;
             eraser.disabled = false;
@@ -46,26 +47,45 @@ function colourChange(e) {
         green = Math.floor(Math.random() * 256);
         blue = Math.floor(Math.random() * 256);
         e.target.style.background = `rgb(${red}, ${green}, ${blue})`;
+        e.target.style.opacity = 1;
     } else if (mode === "standard"){
         e.target.style.background = `#708090`;
+        e.target.style.opacity = 1;
     } else if (mode === "eraser"){
         e.target.style.background = `#FFFAF0`;
+        e.target.style.opacity = 1;
     } else if (mode === "random") {
         e.target.style.background = color;
+        e.target.style.opacity = 1;
     } else if (mode === "pencil") {
+        //e.target.style.opacity = (parseFloat(e.target.style.opacity) || 0) + 0.2;
+        
+        //grayScale(e.target.style.backgroundColor);
         //addShade(e); change this so it checks the lightness of the cell and if its higher than the target remove. e.g. if(e.lightness <= 100).
         //console.log(e.target.style.brightness);
         let oldC = e.target.style.backgroundColor;
         let opacity = oldC.split("(");
         let rgb = opacity[1].split(",");
-        let red = rgb[0];
-        let green = rgb[1];
-        let blue = Number(rgb[2]);
+        let red = parseFloat(rgb[0]);
+        let green = parseFloat(rgb[1]);
+        let blue = parseFloat(rgb[2]);
         
-        console.log(red);
-        console.log(blue);
-        console.log(green);
+        //console.log(red);
+        //console.log(blue);
+        //console.log(green);
         
+        let newShade = `rgb(${red}, ${green}, ${blue})`;
+        //e.target.style.backgroundColor = newShade;
+
+        let oldBrightness = e.target.style.filter;
+        let breakUp = oldBrightness.split("(", ")");
+        console.log(breakUp[0]);
+        /*if (brightness > 0) 
+        {brightness -= 10
+        e.target.style.filter = `brightness(${brightness}%)`;
+        };
+        
+
         //let colString = this.style.backgroundColor;
         //let colArray = colString.split(',');
         //console.log(colArray);
@@ -84,11 +104,41 @@ function colourChange(e) {
 };
 
 function addShade(a){
-    let oldColour = a.target.style.background;
+    let shade;
+    switch(shade){
+        case 0:
+        case "null":
+            a = "#FFFAF0";
+            shade +=1;
+            console.log(shade);
+            break;
+        case 1:
+            a = "#ccc8c0";
+            shade +=1;
+            console.log(shade);
+            break;
+        case 2:
+            a ="999690";
+            shade +=1;
+            console.log(shade);
+            break;
+        case 3:
+            a = "#4c4b48";
+            shade +=1;
+            console.log(shade);
+            break;
+        case 4:
+            a = "#000000";
+            console.log(shade);
+            break;
+        default:
+            a = "#FFFAF0";
+    };
+    /*let oldColour = a.target.style.backgroundColor;
     console.log(oldColour);
     let rgb = oldColour.match(/rgb/g);
     console.log(rgb);
-    if (rgb === null) {
+    /*if (rgb === null) {
         console.log(rgb.indexOf("("));
         console.log(rgb);
     }

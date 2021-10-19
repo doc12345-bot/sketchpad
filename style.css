@@ -62,7 +62,7 @@ button:disabled {
     grid-template-columns: repeat(16, 2fr);
     grid-template-rows: repeat(16, 2fr);
     border-style: solid;
-    border-color:darkslategray;
+    border-color:rgba(4, 255, 255, 0);
     height: 500px;
     width: 500px;
 }
@@ -70,5 +70,7 @@ button:disabled {
 .grid {
     margin: 0px;
     background-color:floralwhite;
+    filter:brightness(100%);
 }
+
 

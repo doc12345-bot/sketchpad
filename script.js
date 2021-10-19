@@ -35,6 +35,7 @@ function makeGrid(size) {
             standard.disabled = false;
             eraser.disabled = false;
             acid.disabled = false;
+            pencil.disabled = false;
             });
     }
 };
@@ -52,29 +53,56 @@ function colourChange(e) {
     } else if (mode === "random") {
         e.target.style.background = color;
     } else if (mode === "pencil") {
-        if (lightness <= 100){
-            lightness -0.10;
+        //addShade(e); change this so it checks the lightness of the cell and if its higher than the target remove. e.g. if(e.lightness <= 100).
+        //console.log(e.target.style.brightness);
+        let oldC = e.target.style.backgroundColor;
+        let opacity = oldC.split("(");
+        let rgb = opacity[1].split(",");
+        let red = rgb[0];
+        let green = rgb[1];
+        let blue = Number(rgb[2]);
+        
+        console.log(red);
+        console.log(blue);
+        console.log(green);
+        
+        //let colString = this.style.backgroundColor;
+        //let colArray = colString.split(',');
+        //console.log(colArray);
+        
+        //console.log(Number(this.style.backgroundColor));
+        /*if (lightness <= 100){
+            lightness -=0.10;
             e.target.style.background = `hsl(210, 13%, ${lightness}%)`;
         } else {
             lightness = 100;
             e.target.style.background = `hsl(210, 13%, ${lightness}%)`;
-        };
+        };*/
     } else {
         e.target.style.background = `#708090`;
     };
 };
 
-function addShade(){
-    do {
+function addShade(a){
+    let oldColour = a.target.style.background;
+    console.log(oldColour);
+    let rgb = oldColour.match(/rgb/g);
+    console.log(rgb);
+    if (rgb === null) {
+        console.log(rgb.indexOf("("));
+        console.log(rgb);
+    }
+    //a.target.style.background =  `#FFFAF0`;
+
+    /*do {
         this.style.opacity +0.1;
-        } while(this.style.opacity >= 1)
+        } while(this.style.opacity >= 1);*/
 };
 
 pencil.addEventListener('click', () => {
     pencil.disabled = true;
     acid.disabled = false;
     standard.disabled = false;
-    random.disabled = false;
     eraser.disabled = false;
     mode = "pencil";
 })
@@ -82,7 +110,6 @@ pencil.addEventListener('click', () => {
 acid.addEventListener('click', () => {
     acid.disabled = true;
     standard.disabled = false;
-    random.disabled = false;
     eraser.disabled = false;
     pencil.disabled = false;
     mode = "acid";

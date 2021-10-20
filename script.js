@@ -58,12 +58,31 @@ function colourChange(e) {
         e.target.style.background = color;
         e.target.style.opacity = 1;
     } else if (mode === "pencil") {
+        darkenByTenth(e.target.style.background);
+        
+        /*let base = e.target.style.backgroundColor;
+        if(base = "#FFFAF0") {
+            e.target.style.backgroundColor = "#ccc8c0";
+            console.log(base);
+        } else if (base = "#FFFAF0") {
+            e.target.style.backgroundColor = "999690";
+            console.log(base);
+        } else if (base = "999690") {
+            e.target.style.backgroundColor = "#4c4b48";
+            console.log(base);
+        } else if (base = "#4c4b48") {
+            e.target.style.backgroundColor = "#000000";
+            console.log(base);
+        } else {
+            e.target.style.backgroundColor = "#ccc8c0";
+        };
+
         //e.target.style.opacity = (parseFloat(e.target.style.opacity) || 0) + 0.2;
         
         //grayScale(e.target.style.backgroundColor);
         //addShade(e); change this so it checks the lightness of the cell and if its higher than the target remove. e.g. if(e.lightness <= 100).
         //console.log(e.target.style.brightness);
-        let oldC = e.target.style.backgroundColor;
+        /*let oldC = e.target.style.backgroundColor;
         let opacity = oldC.split("(");
         let rgb = opacity[1].split(",");
         let red = parseFloat(rgb[0]);
@@ -102,6 +121,66 @@ function colourChange(e) {
         e.target.style.background = `#708090`;
     };
 };
+
+function getLightness(rgbString){
+    let rgbArray = (rgbString.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
+    //console.log(rgbArray);
+
+    let highest = Math.max(...rgbArray);
+    let lowest = Math.max(...rgbArray);
+
+    let decimal = ((highest + lowest) / 2 / 255);
+    let rounded = +decimal.toFixed(3);
+
+    //console.log(rounded);
+
+    return decimal;
+}
+
+function getLowestMiddleHighest(rgbArray){
+    let highest = {val:-1, index:-1};
+    let lowest = {val: Infinity, index:-1};
+
+    rgbArray.map((val,index)=>{
+        if(val > highest.val){
+            highest = {val:val, index:index};
+        }
+        if(val < lowest.val) {
+            lowest = {val:val, index:index};
+        }
+    });
+
+    if(lowest.index === highest.index){
+        lowest.index = highest.index+1;
+    }
+
+    let middle = {index: (3 - highest.index - lowest.index)};
+    middle.val = rgbArray[middle.index];
+    return [lowest, middle, highest];
+}
+
+function darkenByTenth(rgb){
+    let rgbArray = (rgb.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
+    
+    console.log(rgbArray);
+
+    const [lowest,middle,highest]=getLowestMiddleHighest(rgbArray);
+
+    if(highest.val===0){
+        return rgb;
+    }
+
+    const returnArray = [];
+
+    returnArray[highest.index] = highest.val - (Math.min(highest.val, 25.5));
+    const decreaseFraction = highest.val - (Math.min(highest.val, 25.5));
+    returnArray[middle.index] = middle.val - middle.val * decreaseFraction;
+    returnArray[lowest.index] = lowest.val - lowest.val * decreaseFraction;
+
+    console.log(returnArray.join());
+
+    return (`rgb(${returnArray.join()}) `);
+}
 
 function addShade(a){
     let shade;

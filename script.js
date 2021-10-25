@@ -60,13 +60,14 @@ function colourChange(e) {
     } else if (mode === "pencil") {
         let baseLightness = getLightness(e.target.style.background) *255;
         console.log(baseLightness);
-        let saturated = saturation(e.target.style.background)
-        console.log(saturated);
+
+        let lightened = lightenByTenth(e.target.style.background);
+        console.log(lightened)
+
         let darkened = darkenByTenth(e.target.style.background);
         console.log(darkened);
-        e.target.style.background = `rgb(${darkened})`;
-        //e.target.style.background = `rgb(${baseLightness}, ${baseLightness}, ${baseLightness})`;
-        
+        e.target.style.background = darkened;
+    
     } else {
         e.target.style.background = `#708090`;
     };
@@ -126,10 +127,32 @@ function getLowestMiddleHighest(rgbArray){
     return [lowest, middle, highest];
 }
 
+function lightenByTenth(rgb) {
+    let rgbArray = (rgb.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
+    
+    let red = rgbArray[0];
+    let green = rgbArray[1];
+    let blue = rgbArray[2];
+
+    let newRed = Math.round(red + Math.min(255 - red, 25.5));
+    let redDiff = 255 - red;
+    let redIncrease = newRed - red;
+
+    let increaseFraction = redIncrease / redDiff;
+
+    let newGreen = Math.round(green + (255 - green) * increaseFraction);
+    let newBlue = Math.round (blue + (255 - blue) * increaseFraction);
+
+    return (`rgb(${newRed}, ${newGreen}, ${newBlue})`);
+}
+
 function darkenByTenth(rgb){
     let rgbArray = (rgb.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
 
-    const [lowest,middle,highest]=getLowestMiddleHighest(rgbArray);
+    const [lowest,middle,highest] = getLowestMiddleHighest(rgbArray);
+
+    console.log([lowest.val, middle.val ,highest.val]);
+    console.log(lowest.index, middle.index, highest.index);
 
     if(highest.val===0){
         return rgb;
@@ -137,8 +160,9 @@ function darkenByTenth(rgb){
 
     const returnArray = [];
 
-    returnArray[highest.index] = highest.val - (Math.min(highest.val, 25.5));
-    const decreaseFraction = highest.val - (Math.min(highest.val, 25.5));
+    returnArray[highest.index] = highest.val - Math.min(highest.val, 25.5);
+
+    const decreaseFraction = (highest.val - returnArray[highest.index]) / (255 - highest.val);
     returnArray[middle.index] = middle.val - middle.val * decreaseFraction;
     returnArray[lowest.index] = lowest.val - lowest.val * decreaseFraction;
 

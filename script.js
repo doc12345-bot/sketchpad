@@ -58,12 +58,6 @@ function colourChange(e) {
         e.target.style.background = color;
         e.target.style.opacity = 1;
     } else if (mode === "pencil") {
-        let baseLightness = getLightness(e.target.style.background) *255;
-        console.log(baseLightness);
-
-        let lightened = lightenByTenth(e.target.style.background);
-        console.log(lightened)
-
         let darkened = darkenByTenth(e.target.style.background);
         console.log(darkened);
         e.target.style.background = darkened;

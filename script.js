@@ -35,10 +35,11 @@ function makeGrid(size) {
             standard.disabled = false;
             eraser.disabled = false;
             acid.disabled = false;
-            pencil.disabled = false;
+            shader.disabled = false;
             });
     }
 };
+
 
 function colourChange(e) {
     if (mode === "acid"){
@@ -53,6 +54,8 @@ function colourChange(e) {
     } else if (mode === "random") {
         e.target.style.background = color;
     } else if (mode === "shader") {
+        let rgbValue = getRGBValues(e.target.style.backgroundColor);
+        console.log(rgbValue);
         let darkened = darkenByTenth(e.target.style.background);
         console.log(darkened);
         e.target.style.background = darkened;
@@ -61,8 +64,19 @@ function colourChange(e) {
     };
 };
 
+function getRGBValues(str) {
+    var vals = str.substring(str.indexOf('(') +1, str.length -1).split(', ');
+    return {
+      'r': vals[0],
+      'g': vals[1],
+      'b': vals[2]
+    };
+  };
+
 function getLightness(rgbString){
     let rgbArray = (rgbString.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
+
+    console.log(rgbArray);
 
     let highest = Math.max(...rgbArray);
     let lowest = Math.max(...rgbArray);
@@ -139,7 +153,7 @@ function darkenByTenth(rgb){
 };
 
 shader.addEventListener('click', () => {
-    pencil.disabled = true;
+    shader.disabled = true;
     acid.disabled = false;
     standard.disabled = false;
     eraser.disabled = false;
@@ -150,7 +164,7 @@ acid.addEventListener('click', () => {
     acid.disabled = true;
     standard.disabled = false;
     eraser.disabled = false;
-    pencil.disabled = false;
+    shader.disabled = false;
     mode = "acid";
 })
 
@@ -158,7 +172,7 @@ standard.addEventListener('click', () => {
     standard.disabled = true;
     eraser.disabled = false;
     acid.disabled = false;
-    pencil.disabled = false;
+    shader.disabled = false;
     color = `#708090`;
     mode = "standard";
 });
@@ -167,7 +181,7 @@ eraser.addEventListener('click', () => {
     eraser.disabled = true;
     standard.disabled = false;
     acid.disabled = false;
-    pencil.disabled = false;
+    shader.disabled = false;
     color = `#FFFAF0`;
     mode = "eraser";
 });
@@ -176,7 +190,7 @@ random.addEventListener('click', () => {
     eraser.disabled = false;
     standard.disabled = false;
     acid.disabled = false;
-    pencil.disabled = false;
+    shader.disabled = false;
     red = Math.floor(Math.random() * 256);
     green = Math.floor(Math.random() * 256);
     blue = Math.floor(Math.random() * 256);

@@ -5,6 +5,7 @@ const eraser = document.getElementById('eraser');
 const random = document.getElementById('random');
 const acid = document.getElementById('acid');
 const shader = document.getElementById('shade');
+const pencil = document.getElementById('pencil');
 
 let mode = "standard";
 
@@ -14,7 +15,6 @@ const defaultGrid = 16;
 var pixel = document.getElementById('pixels');
 const setSize = document.getElementById('new-size');
 var newSize= '16';
-var color = `#708090`;
 let red;
 let green;
 let blue;
@@ -36,6 +36,7 @@ function makeGrid(size) {
             eraser.disabled = false;
             acid.disabled = false;
             shader.disabled = false;
+            pencil.disabled = false;
             });
     }
 };
@@ -54,25 +55,17 @@ function colourChange(e) {
     } else if (mode === "random") {
         e.target.style.background = color;
     } else if (mode === "shader") {
-        let rgbValue = getRGBValues(e.target.style.backgroundColor);
-        console.log(rgbValue);
-        let darkened = darkenByTenth(e.target.style.background);
+        let darkened = e.target.style.background ? darkenByTenth(e.target.style.background) : "rgb(201, 204, 207)";
         console.log(darkened);
         e.target.style.background = darkened;
+    } else if (mode === "pencil"){
+        let pencilled = e.target.style.background ? pencilShade(e.target.style.background) : "rgb(235, 235, 235)";
+        console.log(pencilled);
+        e.target.style.background = pencilled;
     } else {
         e.target.style.background = `#708090`;
     };
 };
-
-function getRGBValues(str) {
-    var vals = str.substring(str.indexOf('(') +1, str.length -1).split(', ');
-    return {
-      'r': vals[0],
-      'g': vals[1],
-      'b': vals[2]
-    };
-  };
-
 function getLightness(rgbString){
     let rgbArray = (rgbString.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
 
@@ -127,6 +120,15 @@ function lightenByTenth(rgb) {
     return (`rgb(${newRed}, ${newGreen}, ${newBlue})`);
 };
 
+function pencilShade(rgb) {
+    let rgbArray = (rgb.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
+    const [lowest, middle, highest] = getLowestMiddleHighest(rgbArray);
+
+    const newValue = highest.val - Math.min(highest.val, 25.5);
+    
+    return (`rgb(${newValue}, ${newValue}, ${newValue})`);
+};
+
 function darkenByTenth(rgb){
     let rgbArray = (rgb.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
     console.log(rgbArray);
@@ -152,11 +154,21 @@ function darkenByTenth(rgb){
     return (`rgb(${returnArray.join()})`);
 };
 
+pencil.addEventListener('click', () => {
+    pencil.disabled = true;
+    shader.disabled = false;
+    acid.disabled = false;
+    standard.disabled = false;
+    eraser.disabled = false;
+    mode = "pencil";
+})
+
 shader.addEventListener('click', () => {
     shader.disabled = true;
     acid.disabled = false;
     standard.disabled = false;
     eraser.disabled = false;
+    pencil.disabled = false;
     mode = "shader";
 })
 
@@ -165,6 +177,7 @@ acid.addEventListener('click', () => {
     standard.disabled = false;
     eraser.disabled = false;
     shader.disabled = false;
+    pencil.disabled = false;
     mode = "acid";
 })
 
@@ -173,7 +186,7 @@ standard.addEventListener('click', () => {
     eraser.disabled = false;
     acid.disabled = false;
     shader.disabled = false;
-    color = `#708090`;
+    pencil.disabled = false;
     mode = "standard";
 });
 
@@ -182,7 +195,7 @@ eraser.addEventListener('click', () => {
     standard.disabled = false;
     acid.disabled = false;
     shader.disabled = false;
-    color = `#FFFAF0`;
+    pencil.disabled = false;
     mode = "eraser";
 });
 
@@ -191,6 +204,7 @@ random.addEventListener('click', () => {
     standard.disabled = false;
     acid.disabled = false;
     shader.disabled = false;
+    pencil.disabled = false;
     red = Math.floor(Math.random() * 256);
     green = Math.floor(Math.random() * 256);
     blue = Math.floor(Math.random() * 256);

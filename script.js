@@ -4,7 +4,7 @@ const standard = document.getElementById('standard');
 const eraser = document.getElementById('eraser');
 const random = document.getElementById('random');
 const acid = document.getElementById('acid');
-const pencil = document.getElementById('pencil');
+const shader = document.getElementById('shade');
 
 let mode = "standard";
 
@@ -52,7 +52,7 @@ function colourChange(e) {
         e.target.style.background = `#FFFAF0`;
     } else if (mode === "random") {
         e.target.style.background = color;
-    } else if (mode === "pencil") {
+    } else if (mode === "shader") {
         let darkened = darkenByTenth(e.target.style.background);
         console.log(darkened);
         e.target.style.background = darkened;
@@ -138,12 +138,12 @@ function darkenByTenth(rgb){
     return (`rgb(${returnArray.join()})`);
 };
 
-pencil.addEventListener('click', () => {
+shader.addEventListener('click', () => {
     pencil.disabled = true;
     acid.disabled = false;
     standard.disabled = false;
     eraser.disabled = false;
-    mode = "pencil";
+    mode = "shader";
 })
 
 acid.addEventListener('click', () => {

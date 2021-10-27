@@ -18,7 +18,6 @@ var newSize= '16';
 let red;
 let green;
 let blue;
-let lightness = 90;
 
 function makeGrid(size) {
     core.style.gridTemplateColumns = `repeat(${size}, 2fr)`;
@@ -56,16 +55,15 @@ function colourChange(e) {
         e.target.style.background = color;
     } else if (mode === "shader") {
         let darkened = e.target.style.background ? darkenByTenth(e.target.style.background) : "rgb(201, 204, 207)";
-        console.log(darkened);
         e.target.style.background = darkened;
     } else if (mode === "pencil"){
         let pencilled = e.target.style.background ? pencilShade(e.target.style.background) : "rgb(235, 235, 235)";
-        console.log(pencilled);
         e.target.style.background = pencilled;
     } else {
         e.target.style.background = `#708090`;
     };
 };
+
 function getLightness(rgbString){
     let rgbArray = (rgbString.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
 
@@ -131,11 +129,7 @@ function pencilShade(rgb) {
 
 function darkenByTenth(rgb){
     let rgbArray = (rgb.replace(/ /g, ``).slice(4, -1).split(',').map(a => parseInt(a)));
-    console.log(rgbArray);
     const [lowest,middle,highest] = getLowestMiddleHighest(rgbArray);
-
-    console.log([lowest.val, middle.val ,highest.val]);
-    console.log(lowest.index, middle.index, highest.index);
 
     if(highest.val===0){
         return rgb;
@@ -143,13 +137,11 @@ function darkenByTenth(rgb){
 
     const returnArray = [];
 
-    returnArray[highest.index] = highest.val - Math.min(highest.val, 25.5);
+    returnArray[highest.index] = highest.val - Math.min(highest.val, 12.75);
 
     const decreaseFraction = (highest.val - returnArray[highest.index]) / (255 - highest.val);
     returnArray[middle.index] = middle.val - middle.val * decreaseFraction;
     returnArray[lowest.index] = lowest.val - lowest.val * decreaseFraction;
-
-    console.log(returnArray.join());
 
     return (`rgb(${returnArray.join()})`);
 };
